@@ -1,7 +1,7 @@
 <?php
     
 
-    class MySQLController{
+    class Controller{
 
         private $MYSQL_DB = "act14";
         private $MYSQL_HOST = "127.0.0.1";
@@ -11,6 +11,7 @@
         private $conexion;
 
         public function __construct() {
+            //session_start();
             $this->conexion = new mysqli($this->MYSQL_HOST, $this->MYSQL_USER, $this->MYSQL_PASSWORD, $this->MYSQL_DB);
         }
 
@@ -59,7 +60,7 @@
         }
 
         public function crearToken(){
-            session_start();
+            //session_start();
             $randomUid = uniqid("tkn_", true);
             $_SESSION["token"] = $randomUid;
             return $randomUid;
@@ -88,13 +89,14 @@
 
         public function isUsuarioLogued()
         {
-            session_start();
+            //session_start();
             if(!isset($_SESSION["token"])){
                 //No tiene token
                 return false;
             }
 
-            $resultado = $this->conexion->query("SELECT COUNT(*) FROM usuarios WHERE `token` = ".$_SESSION["token"]);
+
+            $resultado = $this->conexion->query("SELECT COUNT(*) FROM usuarios WHERE `token` = '".$_SESSION["token"]."'");
             $resultadoReal = $resultado->fetch_row();
             if($resultadoReal > 0){
                 return true;
